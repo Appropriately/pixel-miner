@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <script src="js/controller.js"></script>
@@ -13,10 +13,21 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
   </head>
   <body ng-app="ClickerGame">
-    <main ng-controller="Clicker">
-      <div id="details">
+    <main ng-controller="BuildingManager">
+      <div id="buildings" class="box">
+        <div class="building" ng-repeat="building in buildings | canAfford:this">
+          <img ng-src="{{building.image}}" />
+          <div>
+            <h2>{{building.name}}</h2>
+            <h2>□: {{building.price}}</h2>
+            <button ng-click="buy(building)">BUY!</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="details" class="box">
         <h1>Pixels</h1>
-        <h2>□ = {{pixels | number}}</h2>
+        <h2>□ = {{pixels | number:0}}</h2>
         <button ng-click="pixels = pixels+1">
           <h2>Mine</h2>
         </button>

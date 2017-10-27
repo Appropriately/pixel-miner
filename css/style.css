@@ -5,15 +5,48 @@ body {
   text-align: center;
 }
 
-#details {
+.box {
   padding: 10px;
   background-color: rgb(22, 22, 22);
+  box-shadow: 2px 2px 4px rgb(37, 40, 49);
+  position: absolute;
+}
+
+.building {
+  width: 80%;
+  margin: 20px auto;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.building div {
+  float: right;
+  width: 70%;
+}
+
+.building div * {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.building img {
+  height: auto;
+  width: 100px;
+}
+
+#buildings {
+  right: 20px;
+  top: 20px;
+  width: 20%;
+  height: calc(100% - 60px);
+}
+
+#details {
   width: 200px;
   height: 220px;
-  position: absolute;
   bottom: 20px;
   left: 20px;
-  box-shadow: 2px 2px 4px  rgb(37, 40, 49);
 }
 
 #details button {
