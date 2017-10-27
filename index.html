@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script src="js/controller.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <head>
+    <title>Pixel Miner</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  </head>
+  <body ng-app="ClickerGame">
+    <main ng-controller="Clicker">
+      <div id="details">
+        <h1>Pixels</h1>
+        <h2>□ = {{pixels | number}}</h2>
+        <button ng-click="pixels = pixels+1">
+          <h2>Mine</h2>
+        </button>
+      </div>
+    </main>
+  </body>
+</html>
