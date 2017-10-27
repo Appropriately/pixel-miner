@@ -4,13 +4,15 @@
     "price" : 10,
     "image" : "http://placehold.it/200x200",
     "alt" : "A Test Building",
-    "increment" : 1
+    "increment" : 1,
+    "total": 0
   },
   {
     "name" : "Test Building 2",
     "price" : 100,
     "image" : "http://placehold.it/200x200",
     "alt" : "Another Test Building",
-    "increment" : 10
+    "increment" : 10,
+    "total": 0
   }
 ]

@@ -19,7 +19,8 @@
           <img ng-src="{{building.image}}" />
           <div>
             <h2>{{building.name}}</h2>
-            <h2>□: {{building.price}}</h2>
+            <h3>■: {{building.price}}</h3>
+            <h3>Total: {{building.total}}</h3>
             <button ng-click="buy(building)">BUY!</button>
           </div>
         </div>
@@ -27,7 +28,7 @@
 
       <div id="details" class="box">
         <h1>Pixels</h1>
-        <h2>□ = {{pixels | number:0}}</h2>
+        <h2>■ = {{pixels | number:0}}</h2>
         <button ng-click="pixels = pixels+1">
           <h2>Mine</h2>
         </button>
