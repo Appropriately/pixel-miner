@@ -29,7 +29,7 @@
     </div>
 
     <div id="options" class="rightBox">
-      <div ng-click="changeView(item.type)" ng-repeat="item in menuItems">
+      <div ng-click="changeView(item.type)" ng-style="currentPanel != item.type && {'opacity':'0.66'}" ng-repeat="item in menuItems">
         <i ng-class="item.icon"></i>
         <p>{{item.name}}</p>
       </div>
