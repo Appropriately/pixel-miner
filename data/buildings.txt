@@ -1,14 +1,16 @@
 [
   {
-    "name" : "Test Building",
+    "name" : "Auto Miner",
+    "type" : "clicker",
     "price" : 10,
     "image" : "http://placehold.it/200x200",
-    "alt" : "A Test Building",
+    "alt" : "Clicks for you, pretty simple.",
     "increment" : 1,
     "total": 0
   },
   {
     "name" : "Test Building 2",
+    "type" : "",
     "price" : 100,
     "image" : "http://placehold.it/200x200",
     "alt" : "Another Test Building",

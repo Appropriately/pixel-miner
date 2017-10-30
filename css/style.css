@@ -1,8 +1,23 @@
+html {
+  transform: all 1s;
+}
+
 body {
-  background-color: rgb(43, 46, 54);
+  background: rgb(43, 46, 54) linear-gradient( rgb(43, 46, 54), rgb(78, 82, 94));
   font-family: "Lucida Console", Monaco, monospace;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: white;
   text-align: center;
+}
+
+a {
+  color: darkgray;
+}
+
+a:visited {
+  color: darkgray;
 }
 
 button {
@@ -18,39 +33,82 @@ button {
   position: absolute;
 }
 
-.building {
+.rightBox {
+  padding: 10px;
+  background-color: rgb(22, 22, 22);
+  box-shadow: 2px 2px 4px rgb(37, 40, 49);
+  position: absolute;
+  min-width: 450px;
+}
+
+.panel {
   width: 80%;
   margin: 20px auto;
-  height: 100px;
-  display: flex;
   justify-content: space-between;
   cursor: pointer;
 }
 
-.building div {
+#upgradePanel {
+  height: 150px;
+  background: rgb(43, 46, 54);
+  padding: 10px;
+}
+
+#buildingPanel {
+  height: 100px;
+  display: flex;
+  background: rgb(43, 46, 54);
+}
+
+#buildingPanel div {
   float: right;
   width: 70%;
 }
 
-.building div * {
+#buildingPanel div * {
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.building div button {
-  padding: 5px;
-}
-
-.building img {
+#buildingPanel img {
   height: auto;
   width: 100px;
 }
 
-#buildings {
+#options {
   right: 20px;
   top: 20px;
-  width: 20%;
-  height: calc(100% - 60px);
+  height: 130px;
+  display: flex;
+}
+
+#options div {
+  margin: 10px;
+  width: 100px;
+  height: 70px;
+  padding: 10px;
+  padding-top: 15px;
+  background: rgb(43, 46, 54); 
+  text-align: center;
+  cursor: pointer;
+}
+
+#options div i {
+  font-size: 30px;
+}
+
+#buildings {
+  right: 20px;
+  bottom: 20px;
+  height: 70%;
+  overflow-y: auto;
+}
+
+#upgrades {
+  right: 20px;
+  bottom: 20px;
+  height: 70%;
+  overflow-y: auto;
 }
 
 #details {
@@ -62,4 +120,34 @@ button {
 
 #details button {
   width: 100px;
+}
+
+#details button:hover {
+  box-shadow: 0px 0px 15px lightgray;
+}
+
+#details button:active {
+  background-color: lightgray;
+}
+
+#settings {
+  position: absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  height:100%;
+  width:100%;
+  background: rgba(82, 82, 82, 0.7);
+  z-index: 2;
+}
+
+#settings div {
+  width: 60%;
+  max-width: 400px;
+  height: 400px;
+  margin: 50px auto;
+  left: 0;
+  right: 0;
+  padding: 20px;
 }

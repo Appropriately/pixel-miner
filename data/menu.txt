@@ -1,0 +1,22 @@
+[
+  {
+    "type" : "building",
+    "name" : "Buildings",
+    "icon": "fa fa-building"
+  },
+  {
+    "type" : "upgrade",
+    "name" : "Upgrades",
+    "icon": "fa fa-flask"
+  },
+  {
+    "type" : "stats",
+    "name" : "Statistics",
+    "icon": "fa fa-bar-chart"
+  },
+  {
+    "type" : "setting",
+    "name" : "Settings",
+    "icon": "fa fa-cog"
+  }
+]

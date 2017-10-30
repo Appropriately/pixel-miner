@@ -4,26 +4,58 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
   <script src="js/controller.js"></script>
-
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <title>Pixel Miner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 
 <body ng-app="ClickerGame">
   <main ng-controller="BuildingManager">
-    <div id="buildings" class="box">
-      <div class="building" ng-repeat="building in buildings | canAfford:this" 
-              ng-click="(pixels >= calculate(building)) && buy(building)"
-              ng-style="(pixels < calculate(building)) && {'opacity':'0.4'}">
-        <img ng-src="{{building.image}}" />
+    <div id="settings" ng-click="currentPanel=''" ng-show="currentPanel=='setting'">
+      <div class="box">
+        <h2><i class="fa fa-cog"></i> Settings</h2><hr>
+        <h2><i class="fa fa-question-circle"></i> About</h2><hr>
+        <p>A clicker game built using AngularJS, as an excuse for me to practice
+          using AngularJS.</p>
+        <p style="color:darkgray">Version: 0.1</p>
+        <p style="color:darkgray">By Sean Lewis</p>
+        <br>
+        <p><i class="fa fa-github"></i> <a target="_blank" href="https://github.com/appropriately">Github</a></p>
+        <p><i class="fa fa-globe"></i> <a target="_blank" href="https://appropriately.github.io/">Portfolio</a></p>
+      </div>
+    </div>
+
+    <div id="options" class="rightBox">
+      <div ng-click="changeView(item.type)" ng-repeat="item in menuItems">
+        <i ng-class="item.icon"></i>
+        <p>{{item.name}}</p>
+      </div>
+    </div>
+
+    <!-- Building panel -->
+    <div id="buildings" class="rightBox" ng-show="currentPanel=='building'">
+      <h2>Buildings</h2>
+      <hr>
+      <div class="panel" id="buildingPanel" ng-repeat="building in buildings | canAfford:this:'building'" ng-click="canAfford(building) && buy(building)" ng-style="!canAfford(building) && {'opacity':'0.25'}">
+        <img ng-src="{{building.image}}" alt="{{building.alt}}" />
         <div>
           <h2>{{building.name}}</h2>
           <h3>■: {{calculate(building)}} | total: {{building.total}}</h3>
         </div>
+      </div>
+    </div>
+
+    <!-- Upgrade panel -->
+    <div id="upgrades" class="rightBox" ng-show="currentPanel=='upgrade'">
+      <h2>Upgrades</h2>
+      <hr>
+      <div class="panel" id="upgradePanel" ng-repeat="upgrade in upgrades | canAfford:this:'upgrade'" ng-click="checkUpgradePrice(upgrade) && upgradeBuy(upgrade)" ng-style="!checkUpgradePrice(upgrade) && {'opacity':'0.25'}">
+        <h2>{{upgrade.name}}</h2>
+        <h3>■: {{upgrade.price}}</h3>
+        <p>{{upgrade.description}}</p>
       </div>
     </div>
 
