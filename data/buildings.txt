@@ -26,5 +26,14 @@
     "alt" : "Tap precious underground pixel stores.",
     "increment" : 10,
     "total": 0
+  },
+  {
+    "name" : "Pixel Pits",
+    "type" : "pits",
+    "price" : 100,
+    "image" : "http://placehold.it/200x200",
+    "alt" : "Tap precious underground pixel stores.",
+    "increment" : 10,
+    "total": 0
   }
 ]

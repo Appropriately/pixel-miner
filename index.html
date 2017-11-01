@@ -4,6 +4,7 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-animate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="js/controller.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -18,13 +19,17 @@
     <div id="settings" ng-click="currentPanel=''" ng-show="currentPanel=='setting'">
       <div class="box" ng-click="$event.stopPropagation()">
         <h2><i class="fa fa-cog"></i> Settings</h2><hr>
-        <h2 style="cursor:pointer" ng-style="!debugMode && {'opacity':'0.33'}" ng-click="debugMode = !debugMode">
+        <h3 style="text-decoration: underline">Options</h3>
+        <h3 style="cursor:pointer" ng-style="!debugMode && {'opacity':'0.33'}" ng-click="debugMode = !debugMode">
           <i ng-class="checkedIcon(debugMode)"></i> Debug mode
-        </h2>
+        </h3>
+        <h3 style="text-decoration: underline">Save Management</h3>
+        <h3 ng-click="save()" style="opacity:0.5;cursor:pointer">Last save: {{lastSave | date:'short'}}</h3>
+        <br>
         <h2><i class="fa fa-question-circle"></i> About</h2><hr>
         <p>A clicker game built using AngularJS, as an excuse for me to practice
           using AngularJS.</p>
-        <p style="color:darkgray">Version: 0.1</p>
+        <p style="color:darkgray">Version: {{currentVersion}}</p>
         <p style="color:darkgray">By Sean Lewis</p>
         <br>
         <p><i class="fa fa-github"></i> <a target="_blank" href="https://github.com/appropriately">Github</a></p>
@@ -40,7 +45,7 @@
     </div>
 
     <!-- Building panel -->
-    <div id="buildings" class="rightBox" ng-show="currentPanel=='building'">
+    <div class="rightBox tab" ng-show="currentPanel=='building'">
       <h2>Buildings</h2>
       <hr>
       <div class="panel" id="buildingPanel" ng-repeat="building in buildings | canAfford:this:'building'" ng-click="canAfford(building) && buy(building)" ng-style="!canAfford(building) && {'opacity':'0.25'}">
@@ -53,13 +58,24 @@
     </div>
 
     <!-- Upgrade panel -->
-    <div id="upgrades" class="rightBox" ng-show="currentPanel=='upgrade'">
+    <div class="rightBox tab" ng-show="currentPanel=='upgrade'">
       <h2>Upgrades</h2>
       <hr>
       <div class="panel" id="upgradePanel" ng-repeat="upgrade in upgrades | canAfford:this:'upgrade'" ng-click="checkUpgradePrice(upgrade) && upgradeBuy(upgrade)" ng-style="!checkUpgradePrice(upgrade) && {'opacity':'0.25'}">
         <h2>{{upgrade.name}}</h2>
         <h3>■: {{upgrade.price}}</h3>
         <p>{{upgrade.description}}</p>
+      </div>
+    </div>
+
+    <!-- Statistics panel -->
+    <div class="rightBox tab" ng-show="currentPanel=='stats'">
+      <h2>Statistics</h2>
+      <hr>
+      <div class="panel" id="statPanel">
+        <h2 style="text-decoration: underline">Pixels</h2>
+        <h3>Total pixels mined</h3>
+        <h3 style="opacity:0.5">■: {{totalPixels}}</h3>
       </div>
     </div>
 

@@ -1,13 +1,23 @@
-var app = angular.module('ClickerGame', []);
+/*
+  By Sean Lewis
+*/
+var saveInterval = 50000;
 
-  app.controller('BuildingManager', function ($scope, $http, $interval) {
-    $scope.pixels = 0;
+var app = angular.module('ClickerGame', ['ngStorage']);
+
+  app.controller('BuildingManager', function (
+    $scope, $http, $interval, $localStorage
+  ) {
+    $scope.pixels = $localStorage.pixels || 0;
     $scope.currentPanel = "";
 
     $scope.debugMode = false;
     
     /* == Stats ============================================================ */
-    $scope.totalPixels = 0;
+    $scope.currentVersion = "0.2"; // Current version of the game
+    $scope.lastSave = $localStorage.lastSave || "";
+    $scope.totalPixels = $localStorage.totalPixels || 0;
+
 
     /* == End ============================================================== */
 
@@ -15,43 +25,59 @@ var app = angular.module('ClickerGame', []);
     $scope.clickerMultiplier = 1;
     $scope.pitsMultiplier = 1;
     
+    // Function which pushes a message to the user
+    $scope.message = function(text, icon) {
+      if(icon == "") console.log(text);
+      else           console.log(text + ", " + icon);
+    }; // message
+
     $scope.checkedIcon = function(boolean) {
       if(boolean) return 'fa fa-check-circle-o';
       else        return 'fa fa-circle-o';
-    } // checkedIcon
+    }; // checkedIcon
 
     $scope.changeView = function(where) {
       $scope.currentPanel = ($scope.currentPanel == where) ? "" : where;
       console.log($scope.currentPanel);
-    } // changeView
+    }; // changeView
 
     $scope.increment = function () {
       $scope.pixels += 1 * $scope.clickerMultiplier;
       $scope.totalPixels += 1 * $scope.clickerMultiplier;
-    } // increment
+    }; // increment
 
     $scope.checkUpgradePrice = function(upgrade) {
       return ($scope.pixels >= upgrade.price) ? true : false;
-    }
+    };
 
     $scope.upgradeBuy = function(upgrade) {
       upgrade.bought = 1;
       $scope.pixels -= upgrade.price;
-    } // upgradeBuy
+    }; // upgradeBuy
 
     $scope.buy = function (building) {
       $scope.pixels -= price(building);
       building.total++;
-    } // buy
+    }; // buy
 
     $scope.canAfford = function(building) {
       return ($scope.pixels >= $scope.calculate(building)) ? true : false;
-    } // canAfford
+    }; // canAfford
 
-    $scope.calculate = function(building){return price(building);}
+    $scope.calculate = function(building){return price(building);};
+
+    /* === Functions for managing data over sessions ========================*/
+    $scope.save = function() {
+      $localStorage.lastSave = ($scope.lastSave = new Date());
+      $localStorage.pixels = $scope.pixels;
+      $localStorage.totalPixels = $scope.totalPixels;
+      $localStorage.buildings = $scope.buildings;
+      $localStorage.upgrades = $scope.upgrades;
+      $scope.message("Game has been saved.", "fa fa-floppy-o");
+    }; // save
 
     $http.get("data/buildings.txt").then(function (response) {
-        $scope.buildings = response.data;
+        $scope.buildings = $localStorage.buildings || response.data;
       });
     
     $http.get("data/menu.txt").then(function (response) {
@@ -59,19 +85,22 @@ var app = angular.module('ClickerGame', []);
     });
 
     $http.get("data/upgrades.txt").then(function (response) {
-      $scope.upgrades = response.data;
+      $scope.upgrades = $localStorage.upgrades || response.data;
     });
 
     $scope.resetMultipliers = function() {
       $scope.clickerMultiplier = 1;
       $scope.pitsMultiplier = 1;
-    } //resetMultipliers
+    }; //resetMultipliers
 
     $scope.addPixels = function(building, multiplier) {
       $scope.pixels += building.total * building.increment * multiplier;
       $scope.totalPixels += building.total * building.increment * multiplier;
-    }
-    
+    };
+
+    // Save after a fixed number of milliseconds, determined by saveInterval
+    $interval(function() { $scope.save(); }, saveInterval);
+
     // Every second, check buildings and update details
     $interval(function() { 
       // Loop through array of bought buildings
@@ -117,13 +146,13 @@ app.filter('canAfford', function () {
     angular.forEach(input, function (type) {
       if (type.debug == 1 && scope.debugMode && type.bought != 1) {
         out.push(type);
-      } else if (type.price / 2 <= scope.totalPixels && type.bought != 1 
-              && type.debug != 1) {
+      } else if (type.price / 2 <= scope.totalPixels && 
+                 type.bought != 1 && type.debug != 1) {
         out.push(type);
       }
     });
     return out;
-  }
+  };
 });
 
 // Calculates the price

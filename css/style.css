@@ -1,6 +1,6 @@
 html {
   transform: all 1s;
-  user-select: none;
+  user-select: none; /* Prevents users from highlighting things */
 }
 
 body {
@@ -63,12 +63,15 @@ button {
 }
 
 #buildingPanel {
-  height: 100px;
+  width: 360px;
+  min-height: 100px;
   display: flex;
+  padding: 10px;
   background: rgb(43, 46, 54);
 }
 
 #buildingPanel div {
+  padding: 0 10px;
   float: right;
   width: 70%;
 }
@@ -79,8 +82,8 @@ button {
 }
 
 #buildingPanel img {
-  height: auto;
-  width: 100px;
+  height: 100px;
+  width: auto;
 }
 
 #options {
@@ -105,14 +108,7 @@ button {
   font-size: 30px;
 }
 
-#buildings {
-  right: 20px;
-  bottom: 20px;
-  height: 70%;
-  overflow-y: auto;
-}
-
-#upgrades {
+.tab {
   right: 20px;
   bottom: 20px;
   height: 70%;
@@ -120,7 +116,7 @@ button {
 }
 
 #details {
-  width: 200px;
+  width: 300px;
   height: 220px;
   bottom: 20px;
   left: 20px;
