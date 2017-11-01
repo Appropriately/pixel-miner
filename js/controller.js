@@ -1,18 +1,23 @@
 /*
   By Sean Lewis
 */
+var saveInterval = 50000;
+
 var app = angular.module('ClickerGame', ['ngStorage']);
 
   app.controller('BuildingManager', function (
     $scope, $http, $interval, $localStorage
   ) {
-    $scope.pixels = 0;
+    $scope.pixels = $localStorage.pixels || 0;
     $scope.currentPanel = "";
 
     $scope.debugMode = false;
     
     /* == Stats ============================================================ */
-    $scope.totalPixels = 0;
+    $scope.currentVersion = "0.2"; // Current version of the game
+    $scope.lastSave = $localStorage.lastSave || "";
+    $scope.totalPixels = $localStorage.totalPixels || 0;
+
 
     /* == End ============================================================== */
 
@@ -20,6 +25,12 @@ var app = angular.module('ClickerGame', ['ngStorage']);
     $scope.clickerMultiplier = 1;
     $scope.pitsMultiplier = 1;
     
+    // Function which pushes a message to the user
+    $scope.message = function(text, icon) {
+      if(icon == "") console.log(text);
+      else           console.log(text + ", " + icon);
+    }; // message
+
     $scope.checkedIcon = function(boolean) {
       if(boolean) return 'fa fa-check-circle-o';
       else        return 'fa fa-circle-o';
@@ -57,21 +68,16 @@ var app = angular.module('ClickerGame', ['ngStorage']);
 
     /* === Functions for managing data over sessions ========================*/
     $scope.save = function() {
+      $localStorage.lastSave = ($scope.lastSave = new Date());
       $localStorage.pixels = $scope.pixels;
       $localStorage.totalPixels = $scope.totalPixels;
       $localStorage.buildings = $scope.buildings;
       $localStorage.upgrades = $scope.upgrades;
+      $scope.message("Game has been saved.", "fa fa-floppy-o");
     }; // save
 
-    $scope.load = function() {
-      $scope.pixels = $localStorage.pixels;
-      $scope.totalPixels = $localStorage.totalPixels;
-      $scope.buildings = $localStorage.buildings;
-      $scope.upgrades = $localStorage.upgrades;
-    }; // load
-
     $http.get("data/buildings.txt").then(function (response) {
-        $scope.buildings = response.data;
+        $scope.buildings = $localStorage.buildings || response.data;
       });
     
     $http.get("data/menu.txt").then(function (response) {
@@ -79,7 +85,7 @@ var app = angular.module('ClickerGame', ['ngStorage']);
     });
 
     $http.get("data/upgrades.txt").then(function (response) {
-      $scope.upgrades = response.data;
+      $scope.upgrades = $localStorage.upgrades || response.data;
     });
 
     $scope.resetMultipliers = function() {
@@ -91,6 +97,9 @@ var app = angular.module('ClickerGame', ['ngStorage']);
       $scope.pixels += building.total * building.increment * multiplier;
       $scope.totalPixels += building.total * building.increment * multiplier;
     };
+
+    // Save after a fixed number of milliseconds, determined by saveInterval
+    $interval(function() { $scope.save(); }, saveInterval);
 
     // Every second, check buildings and update details
     $interval(function() { 
