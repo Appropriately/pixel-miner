@@ -1,5 +1,6 @@
 html {
   transform: all 1s;
+  user-select: none;
 }
 
 body {
@@ -39,10 +40,17 @@ button {
   box-shadow: 2px 2px 4px rgb(37, 40, 49);
   position: absolute;
   min-width: 450px;
+
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.rightBox.ng-hide {
+  opacity: 0;
 }
 
 .panel {
-  width: 80%;
+  width: 360px;
   margin: 20px auto;
   justify-content: space-between;
   cursor: pointer;
@@ -143,11 +151,12 @@ button {
 }
 
 #settings div {
-  width: 60%;
-  max-width: 400px;
-  height: 400px;
+  width: 80%;
+  max-width: 500px;
+  min-height: 400px;
   margin: 50px auto;
   left: 0;
   right: 0;
   padding: 20px;
+  z-index: 3;
 }

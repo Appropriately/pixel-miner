@@ -3,6 +3,7 @@
 
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-animate.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="js/controller.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -15,8 +16,11 @@
 <body ng-app="ClickerGame">
   <main ng-controller="BuildingManager">
     <div id="settings" ng-click="currentPanel=''" ng-show="currentPanel=='setting'">
-      <div class="box">
+      <div class="box" ng-click="$event.stopPropagation()">
         <h2><i class="fa fa-cog"></i> Settings</h2><hr>
+        <h2 style="cursor:pointer" ng-style="!debugMode && {'opacity':'0.33'}" ng-click="debugMode = !debugMode">
+          <i ng-class="checkedIcon(debugMode)"></i> Debug mode
+        </h2>
         <h2><i class="fa fa-question-circle"></i> About</h2><hr>
         <p>A clicker game built using AngularJS, as an excuse for me to practice
           using AngularJS.</p>

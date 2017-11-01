@@ -3,6 +3,8 @@ var app = angular.module('ClickerGame', []);
   app.controller('BuildingManager', function ($scope, $http, $interval) {
     $scope.pixels = 0;
     $scope.currentPanel = "";
+
+    $scope.debugMode = false;
     
     /* == Stats ============================================================ */
     $scope.totalPixels = 0;
@@ -11,7 +13,13 @@ var app = angular.module('ClickerGame', []);
 
     // Variables for clicker upgrades
     $scope.clickerMultiplier = 1;
+    $scope.pitsMultiplier = 1;
     
+    $scope.checkedIcon = function(boolean) {
+      if(boolean) return 'fa fa-check-circle-o';
+      else        return 'fa fa-circle-o';
+    } // checkedIcon
+
     $scope.changeView = function(where) {
       $scope.currentPanel = ($scope.currentPanel == where) ? "" : where;
       console.log($scope.currentPanel);
@@ -56,6 +64,7 @@ var app = angular.module('ClickerGame', []);
 
     $scope.resetMultipliers = function() {
       $scope.clickerMultiplier = 1;
+      $scope.pitsMultiplier = 1;
     } //resetMultipliers
 
     $scope.addPixels = function(building, multiplier) {
@@ -70,6 +79,9 @@ var app = angular.module('ClickerGame', []);
         switch(building.type) {
           case 'clicker':
             $scope.addPixels(building,$scope.clickerMultiplier);
+            break;
+          case 'pits':
+            $scope.addPixels(building,$scope.pitsMultiplier);
             break;
           default:
             $scope.addPixels(building,1);
@@ -88,6 +100,9 @@ var app = angular.module('ClickerGame', []);
             case 'clicker':
               $scope.clickerMultiplier *= upgrade.multiplier;
               break;
+            case 'pits':
+              $scope.pitsMultiplier *= upgrade.multiplier;
+              break;
           } // switch
         } // if
       });
@@ -100,8 +115,11 @@ app.filter('canAfford', function () {
   return function (input,scope,type) {
     var out = [];
     angular.forEach(input, function (type) {
-      if (type.price / 2 <= scope.totalPixels && type.bought != 1) {
-        out.push(type)
+      if (type.debug == 1 && scope.debugMode && type.bought != 1) {
+        out.push(type);
+      } else if (type.price / 2 <= scope.totalPixels && type.bought != 1 
+              && type.debug != 1) {
+        out.push(type);
       }
     });
     return out;

@@ -1,5 +1,15 @@
 [
   {
+    "name" : "Debug miner",
+    "type" : "",
+    "price" : 0,
+    "image" : "http://placehold.it/200x200",
+    "alt" : "More debugging!",
+    "increment" : 100,
+    "total": 0,
+    "debug": 1
+  },
+  {
     "name" : "Auto Miner",
     "type" : "clicker",
     "price" : 10,
@@ -9,11 +19,11 @@
     "total": 0
   },
   {
-    "name" : "Test Building 2",
-    "type" : "",
+    "name" : "Pixel Pits",
+    "type" : "pits",
     "price" : 100,
     "image" : "http://placehold.it/200x200",
-    "alt" : "Another Test Building",
+    "alt" : "Tap precious underground pixel stores.",
     "increment" : 10,
     "total": 0
   }

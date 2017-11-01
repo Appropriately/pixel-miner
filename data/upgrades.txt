@@ -5,14 +5,39 @@
     "price" : 0,
     "multiplier" : 100,
     "description" : "It is literally cheating.",
-    "bought" : 0
+    "bought" : 0,
+    "debug" : 1 
   },
   {
-    "name" : "Better tools",
+    "name" : "Better cursor",
     "type" : "clicker",
     "price" : 200,
     "multiplier" : 2,
     "description" : "Twice as many pixels per click.",
+    "bought" : 0
+  },
+  {
+    "name" : "Gold cursor",
+    "type" : "clicker",
+    "price" : 20000,
+    "multiplier" : 2,
+    "description" : "Better cursor, more pixels. Doubles clicked pixels.",
+    "bought" : 0
+  },  
+  {
+    "name" : "Diamond tools",
+    "type" : "clicker",
+    "price" : 2000000,
+    "multiplier" : 3,
+    "description" : "Looks kind of tacky. Triples clicked pixels.",
+    "bought" : 0
+  },
+  {
+    "name" : "Deeper veins",
+    "type" : "pits",
+    "price" : 500,
+    "multiplier" : 1.5,
+    "description" : "Pixel pits get 50% more pixels per second!",
     "bought" : 0
   }
 ]
