@@ -1,6 +1,6 @@
 html {
   transform: all 1s;
-  user-select: none;
+  user-select: none; /* Prevents users from highlighting things */
 }
 
 body {

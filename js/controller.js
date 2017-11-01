@@ -1,6 +1,11 @@
-var app = angular.module('ClickerGame', []);
+/*
+  By Sean Lewis
+*/
+var app = angular.module('ClickerGame', ['ngStorage']);
 
-  app.controller('BuildingManager', function ($scope, $http, $interval) {
+  app.controller('BuildingManager', function (
+    $scope, $http, $interval, $localStorage
+  ) {
     $scope.pixels = 0;
     $scope.currentPanel = "";
 
@@ -18,37 +23,52 @@ var app = angular.module('ClickerGame', []);
     $scope.checkedIcon = function(boolean) {
       if(boolean) return 'fa fa-check-circle-o';
       else        return 'fa fa-circle-o';
-    } // checkedIcon
+    }; // checkedIcon
 
     $scope.changeView = function(where) {
       $scope.currentPanel = ($scope.currentPanel == where) ? "" : where;
       console.log($scope.currentPanel);
-    } // changeView
+    }; // changeView
 
     $scope.increment = function () {
       $scope.pixels += 1 * $scope.clickerMultiplier;
       $scope.totalPixels += 1 * $scope.clickerMultiplier;
-    } // increment
+    }; // increment
 
     $scope.checkUpgradePrice = function(upgrade) {
       return ($scope.pixels >= upgrade.price) ? true : false;
-    }
+    };
 
     $scope.upgradeBuy = function(upgrade) {
       upgrade.bought = 1;
       $scope.pixels -= upgrade.price;
-    } // upgradeBuy
+    }; // upgradeBuy
 
     $scope.buy = function (building) {
       $scope.pixels -= price(building);
       building.total++;
-    } // buy
+    }; // buy
 
     $scope.canAfford = function(building) {
       return ($scope.pixels >= $scope.calculate(building)) ? true : false;
-    } // canAfford
+    }; // canAfford
 
-    $scope.calculate = function(building){return price(building);}
+    $scope.calculate = function(building){return price(building);};
+
+    /* === Functions for managing data over sessions ========================*/
+    $scope.save = function() {
+      $localStorage.pixels = $scope.pixels;
+      $localStorage.totalPixels = $scope.totalPixels;
+      $localStorage.buildings = $scope.buildings;
+      $localStorage.upgrades = $scope.upgrades;
+    }; // save
+
+    $scope.load = function() {
+      $scope.pixels = $localStorage.pixels;
+      $scope.totalPixels = $localStorage.totalPixels;
+      $scope.buildings = $localStorage.buildings;
+      $scope.upgrades = $localStorage.upgrades;
+    }; // load
 
     $http.get("data/buildings.txt").then(function (response) {
         $scope.buildings = response.data;
@@ -65,13 +85,13 @@ var app = angular.module('ClickerGame', []);
     $scope.resetMultipliers = function() {
       $scope.clickerMultiplier = 1;
       $scope.pitsMultiplier = 1;
-    } //resetMultipliers
+    }; //resetMultipliers
 
     $scope.addPixels = function(building, multiplier) {
       $scope.pixels += building.total * building.increment * multiplier;
       $scope.totalPixels += building.total * building.increment * multiplier;
-    }
-    
+    };
+
     // Every second, check buildings and update details
     $interval(function() { 
       // Loop through array of bought buildings
@@ -117,13 +137,13 @@ app.filter('canAfford', function () {
     angular.forEach(input, function (type) {
       if (type.debug == 1 && scope.debugMode && type.bought != 1) {
         out.push(type);
-      } else if (type.price / 2 <= scope.totalPixels && type.bought != 1 
-              && type.debug != 1) {
+      } else if (type.price / 2 <= scope.totalPixels && 
+                 type.bought != 1 && type.debug != 1) {
         out.push(type);
       }
     });
     return out;
-  }
+  };
 });
 
 // Calculates the price
