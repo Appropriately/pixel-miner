@@ -28,12 +28,12 @@
     "total": 0
   },
   {
-    "name" : "Pixel Pits",
-    "type" : "pits",
-    "price" : 100,
+    "name" : "Pixel Generator",
+    "type" : "generator",
+    "price" : 2000,
     "image" : "http://placehold.it/200x200",
-    "alt" : "Tap precious underground pixel stores.",
-    "increment" : 10,
+    "alt" : "Powered pixel producers.",
+    "increment" : 500,
     "total": 0
   }
 ]

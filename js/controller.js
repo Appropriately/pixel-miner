@@ -21,6 +21,22 @@ var app = angular.module('ClickerGame', ['ngStorage']);
 
     /* == End ============================================================== */
 
+    $scope.deleteSaveFile = function () {
+      $scope.lastSave = "";
+      $scope.pixels = 0;
+      $scope.totalPixels = 0;
+      $http.get("data/buildings.txt").then(function (response) {
+        $scope.buildings = response.data;
+      });
+
+      $http.get("data/upgrades.txt").then(function (response) {
+        $scope.upgrades = response.data;
+      });
+      $localStorage.clear();
+      $localStorage.$reset();
+      $scope.save();
+    }; // deleteSaveFile
+
     // Variables for clicker upgrades
     $scope.clickerMultiplier = 1;
     $scope.pitsMultiplier = 1;
@@ -77,15 +93,17 @@ var app = angular.module('ClickerGame', ['ngStorage']);
     }; // save
 
     $http.get("data/buildings.txt").then(function (response) {
-        $scope.buildings = $localStorage.buildings || response.data;
-      });
+      $scope.buildings = (response.data.length>$localStorage.buildings.length)?
+        response.data : $localStorage.buildings;
+    });
     
     $http.get("data/menu.txt").then(function (response) {
       $scope.menuItems = response.data;
     });
 
     $http.get("data/upgrades.txt").then(function (response) {
-      $scope.upgrades = $localStorage.upgrades || response.data;
+      $scope.upgrades = (response.data.length > $localStorage.upgrades.length) ?
+        response.data: $localStorage.upgrades;
     });
 
     $scope.resetMultipliers = function() {
@@ -154,6 +172,20 @@ app.filter('canAfford', function () {
     return out;
   };
 });
+
+app.filter('numberSize', function() {
+  return function(input) {
+    var output = 0;
+    if (input >= 1e12) output = (input / 1e12).toFixed(2) + "T";
+    else if (input >= 1e9) output = (input / 1e9).toFixed(2) + "B";
+    else if (input >= 1e6) output = (input / 1e6).toFixed(2) + "M";
+    else if (input >= 1e3) output = (input / 1e3).toFixed(2) + "K";
+    else output = input;
+    return output;
+  };
+}); // numberSize filter
+
+
 
 // Calculates the price
 function price(building) {

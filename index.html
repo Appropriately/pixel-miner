@@ -25,6 +25,7 @@
         </h3>
         <h3 style="text-decoration: underline">Save Management</h3>
         <h3 ng-click="save()" style="opacity:0.5;cursor:pointer">Last save: {{lastSave | date:'short'}}</h3>
+        <h3 ng-click="deleteSaveFile()">Reset savefile</h3>
         <br>
         <h2><i class="fa fa-question-circle"></i> About</h2><hr>
         <p>A clicker game built using AngularJS, as an excuse for me to practice
@@ -52,7 +53,8 @@
         <img ng-src="{{building.image}}" alt="{{building.alt}}" />
         <div>
           <h2>{{building.name}}</h2>
-          <h3>■: {{calculate(building)}} | total: {{building.total}}</h3>
+          <h3>■: {{calculate(building) | numberSize:0}}</h3>
+          <h3>Total: {{building.total}}</h3>
         </div>
       </div>
     </div>
@@ -63,7 +65,7 @@
       <hr>
       <div class="panel" id="upgradePanel" ng-repeat="upgrade in upgrades | canAfford:this:'upgrade'" ng-click="checkUpgradePrice(upgrade) && upgradeBuy(upgrade)" ng-style="!checkUpgradePrice(upgrade) && {'opacity':'0.25'}">
         <h2>{{upgrade.name}}</h2>
-        <h3>■: {{upgrade.price}}</h3>
+        <h3>■: {{upgrade.price | numberSize:0}}</h3>
         <p>{{upgrade.description}}</p>
       </div>
     </div>
@@ -75,13 +77,13 @@
       <div class="panel" id="statPanel">
         <h2 style="text-decoration: underline">Pixels</h2>
         <h3>Total pixels mined</h3>
-        <h3 style="opacity:0.5">■: {{totalPixels}}</h3>
+        <h3 style="opacity:0.5">■: {{totalPixels | numberSize:0}}</h3>
       </div>
     </div>
 
     <div id="details" class="box">
       <h1>Pixels</h1>
-      <h2>■ = {{pixels | number:0}}</h2>
+      <h2>■ = {{pixels | numberSize:0}}</h2>
       <button ng-click="increment()">
         <h2>Mine</h2>
       </button>
