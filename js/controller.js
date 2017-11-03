@@ -22,19 +22,22 @@ var app = angular.module('ClickerGame', ['ngStorage']);
     /* == End ============================================================== */
 
     $scope.deleteSaveFile = function () {
-      $scope.lastSave = "";
-      $scope.pixels = 0;
-      $scope.totalPixels = 0;
-      $http.get("data/buildings.txt").then(function (response) {
-        $scope.buildings = response.data;
-      });
-
-      $http.get("data/upgrades.txt").then(function (response) {
-        $scope.upgrades = response.data;
-      });
-      $localStorage.clear();
-      $localStorage.$reset();
-      $scope.save();
+      var confirmed = confirm("Do you really want to reset your save file?");
+      if(confirmed) {
+        $scope.lastSave = new Date();
+        $scope.pixels = 0;
+        $scope.totalPixels = 0;
+        $http.get("data/buildings.txt").then(function (response) {
+          $scope.buildings = response.data;
+        });
+  
+        $http.get("data/upgrades.txt").then(function (response) {
+          $scope.upgrades = response.data;
+        });
+        $localStorage.clear();
+        $localStorage.$reset();
+        $scope.save();
+      }
     }; // deleteSaveFile
 
     // Variables for clicker upgrades
