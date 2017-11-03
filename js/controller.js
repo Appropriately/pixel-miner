@@ -1,9 +1,9 @@
 /*
-  By Sean Lewis
+  By Sean Lewis, copyright 2017
 */
 var saveInterval = 50000;
 
-var app = angular.module('ClickerGame', ['ngStorage']);
+var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
 
   app.controller('BuildingManager', function (
     $scope, $http, $interval, $localStorage
@@ -46,8 +46,14 @@ var app = angular.module('ClickerGame', ['ngStorage']);
     
     // Function which pushes a message to the user
     $scope.message = function(text, icon) {
-      if(icon == "") console.log(text);
-      else           console.log(text + ", " + icon);
+      var elm;
+      if(icon == "") {
+        elm = '<div id="popup" class="rightBox"><h2>'+text+'</h2></div>';
+      } else {
+        elm = '<div id="popup" class="rightBox"><h2><i class="' +
+          icon + '"></i> ' + text + '</h2></div>';
+      } // if
+      $(elm).appendTo('main').delay(2000).queue(function(){$(this).remove();});
     }; // message
 
     $scope.checkedIcon = function(boolean) {

@@ -1,6 +1,7 @@
 html {
-  transform: all 1s;
   user-select: none; /* Prevents users from highlighting things */
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
 }
 
 body {
@@ -40,10 +41,13 @@ button {
   box-shadow: 2px 2px 4px rgb(37, 40, 49);
   position: absolute;
   min-width: 450px;
-
-  -webkit-transition:all linear 0.5s;
-  transition:all linear 0.5s;
+  transition: all linear 0.2s;
 }
+
+.rightBox.ng-hide {
+  height: 200px;
+}
+
 
 .rightBox.ng-hide {
   opacity: 0;
@@ -57,9 +61,13 @@ button {
 }
 
 #upgradePanel {
-  height: 150px;
+  min-height: 100px;
   background: rgb(43, 46, 54);
   padding: 10px;
+}
+
+#upgradePanel * {
+  margin: 10px;
 }
 
 #buildingPanel {
@@ -155,4 +163,20 @@ button {
   right: 0;
   padding: 20px;
   z-index: 3;
+}
+
+#popup {
+  left:0;
+  bottom:50px;
+  margin: 0 auto;
+  right:0;
+  width: 200px;
+  height: 100px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#popup.ng-hide {
+  opacity: 0;
 }
