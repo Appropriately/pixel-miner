@@ -3,6 +3,12 @@
 */
 var saveInterval = 50000;
 
+// Generate a pixel at a certain point, then move it based on a velocity
+function pixelMovement(element) {
+
+
+} // pixelMovement
+
 var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
 
   app.controller('BuildingManager', function (
@@ -17,16 +23,19 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
     $scope.currentVersion = "0.2"; // Current version of the game
     $scope.lastSave = $localStorage.lastSave || "";
     $scope.totalPixels = $localStorage.totalPixels || 0;
+    $scope.highestPixelCount = $localStorage.highestPixelCount || 0;
 
 
     /* == End ============================================================== */
 
+    // Erases the save file and creates a new save with all values reset
     $scope.deleteSaveFile = function () {
       var confirmed = confirm("Do you really want to reset your save file?");
       if(confirmed) {
         $scope.lastSave = new Date();
         $scope.pixels = 0;
         $scope.totalPixels = 0;
+        $scope.highestPixelCount = 0;
         $http.get("data/buildings.txt").then(function (response) {
           $scope.buildings = response.data;
         });
@@ -53,7 +62,11 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
         elm = '<div id="popup" class="rightBox"><h2><i class="' +
           icon + '"></i> ' + text + '</h2></div>';
       } // if
-      $(elm).appendTo('main').delay(2000).queue(function(){$(this).remove();});
+
+      $(elm).appendTo('main').animate({opacity:1},400,function() {
+        $(this).delay(3000)
+               .animate({opacity:0},400,function(){$(this).remove();});
+      });
     }; // message
 
     $scope.checkedIcon = function(boolean) {
@@ -98,23 +111,10 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
       $localStorage.totalPixels = $scope.totalPixels;
       $localStorage.buildings = $scope.buildings;
       $localStorage.upgrades = $scope.upgrades;
+      $localStorage.highestPixelCount = $scope.highestPixelCount;
       $scope.message("Game has been saved.", "fa fa-floppy-o");
     }; // save
-
-    $http.get("data/buildings.txt").then(function (response) {
-      $scope.buildings = (response.data.length>$localStorage.buildings.length)?
-        response.data : $localStorage.buildings;
-    });
     
-    $http.get("data/menu.txt").then(function (response) {
-      $scope.menuItems = response.data;
-    });
-
-    $http.get("data/upgrades.txt").then(function (response) {
-      $scope.upgrades = (response.data.length > $localStorage.upgrades.length) ?
-        response.data: $localStorage.upgrades;
-    });
-
     $scope.resetMultipliers = function() {
       $scope.clickerMultiplier = 1;
       $scope.pitsMultiplier = 1;
@@ -124,6 +124,19 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
       $scope.pixels += building.total * building.increment * multiplier;
       $scope.totalPixels += building.total * building.increment * multiplier;
     };
+
+    /* Parse data files for use when generating buildings/upgrades */
+    $http.get("data/buildings.txt").then(function (response) {
+      $scope.buildings = (response.data.length>$localStorage.buildings.length)?
+        response.data : $localStorage.buildings;
+    });
+    $http.get("data/menu.txt").then(function (response) {
+      $scope.menuItems = response.data;
+    });
+    $http.get("data/upgrades.txt").then(function (response) {
+      $scope.upgrades = (response.data.length > $localStorage.upgrades.length) ?
+        response.data: $localStorage.upgrades;
+    });
 
     // Save after a fixed number of milliseconds, determined by saveInterval
     $interval(function() { $scope.save(); }, saveInterval);
@@ -162,6 +175,10 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
           } // switch
         } // if
       });
+
+      // Adjust stats
+      if($scope.pixels > $scope.highestPixelCount)
+        $scope.highestPixelCount = $scope.pixels;
     },1000);
   });
 

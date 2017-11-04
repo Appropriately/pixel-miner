@@ -60,6 +60,12 @@ button {
   cursor: pointer;
 }
 
+.pixel {
+  position: absolute;
+  bottom : 10px;
+  left: 10px;
+}
+
 #upgradePanel {
   min-height: 100px;
   background: rgb(43, 46, 54);
@@ -175,8 +181,5 @@ button {
   display:flex;
   justify-content:center;
   align-items:center;
-}
-
-#popup.ng-hide {
-  opacity: 0;
+  opacity:0;
 }
