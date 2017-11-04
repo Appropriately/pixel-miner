@@ -20,7 +20,7 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
     $scope.debugMode = false;
     
     /* == Stats ============================================================ */
-    $scope.currentVersion = "0.2"; // Current version of the game
+    $scope.currentVersion = "0.3"; // Current version of the game
     $scope.lastSave = $localStorage.lastSave || "";
     $scope.totalPixels = $localStorage.totalPixels || 0;
     $scope.highestPixelCount = $localStorage.highestPixelCount || 0;
