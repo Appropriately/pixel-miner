@@ -18,9 +18,9 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
     $scope.currentPanel = "";
 
     $scope.debugMode = false;
-    
+
     /* == Stats ============================================================ */
-    $scope.currentVersion = "0.3"; // Current version of the game
+    $scope.currentVersion = "0.3.1"; // Current version of the game
     $scope.lastSave = $localStorage.lastSave || "";
     $scope.totalPixels = $localStorage.totalPixels || 0;
     $scope.highestPixelCount = $localStorage.highestPixelCount || 0;
@@ -39,7 +39,7 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
         $http.get("data/buildings.txt").then(function (response) {
           $scope.buildings = response.data;
         });
-  
+
         $http.get("data/upgrades.txt").then(function (response) {
           $scope.upgrades = response.data;
         });
@@ -52,7 +52,7 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
     // Variables for clicker upgrades
     $scope.clickerMultiplier = 1;
     $scope.pitsMultiplier = 1;
-    
+
     // Function which pushes a message to the user
     $scope.message = function(text, icon) {
       var elm;
@@ -114,7 +114,7 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
       $localStorage.highestPixelCount = $scope.highestPixelCount;
       $scope.message("Game has been saved.", "fa fa-floppy-o");
     }; // save
-    
+
     $scope.resetMultipliers = function() {
       $scope.clickerMultiplier = 1;
       $scope.pitsMultiplier = 1;
@@ -127,22 +127,32 @@ var app = angular.module('ClickerGame', ['ngStorage', 'ngAnimate']);
 
     /* Parse data files for use when generating buildings/upgrades */
     $http.get("data/buildings.txt").then(function (response) {
-      $scope.buildings = (response.data.length>$localStorage.buildings.length)?
-        response.data : $localStorage.buildings;
+      if ($localStorage.buildings === null)
+        $scope.buildings = response.data;
+      else if (response.data.length > $localStorage.buildings.length)
+        $scope.buildings = response.data;
+      else
+        $scope.buildings = $localStorage.buildings;
     });
+
     $http.get("data/menu.txt").then(function (response) {
       $scope.menuItems = response.data;
     });
+
     $http.get("data/upgrades.txt").then(function (response) {
-      $scope.upgrades = (response.data.length > $localStorage.upgrades.length) ?
-        response.data: $localStorage.upgrades;
+      if ($localStorage.upgrades === null)
+        $scope.upgrades = response.data;
+      else if (upgrades.data.length > $localStorage.upgrades.length)
+        $scope.upgrades = response.data;
+      else
+        $scope.upgrades = $localStorage.upgrades;
     });
 
     // Save after a fixed number of milliseconds, determined by saveInterval
     $interval(function() { $scope.save(); }, saveInterval);
 
     // Every second, check buildings and update details
-    $interval(function() { 
+    $interval(function() {
       // Loop through array of bought buildings
       angular.forEach($scope.buildings, function(building) {
         switch(building.type) {
@@ -190,7 +200,7 @@ app.filter('canAfford', function () {
     angular.forEach(input, function (type) {
       if (type.debug == 1 && scope.debugMode && type.bought != 1) {
         out.push(type);
-      } else if (type.price / 2 <= scope.totalPixels && 
+      } else if (type.price / 2 <= scope.totalPixels &&
                  type.bought != 1 && type.debug != 1) {
         out.push(type);
       }
